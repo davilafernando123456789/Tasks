@@ -1,0 +1,64 @@
+<!-- Contenedor principal -->
+<div class="container mt-4 mb-5">
+  <!-- Fila -->
+  <div class="row">
+    <!-- Columna con offset para centrar en dispositivos medianos -->
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="text-black text-center">Editar tarea</h2>
+        </div>
+        <!-- Cuerpo de la tarjeta que contiene el formulario -->
+        <div class="card-body">
+          <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="title">Título:</label>
+              <input type="text" id="title" formControlName="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Descripción:</label>
+              <textarea id="description" formControlName="description" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="dueDate">Fecha de vencimiento:</label>
+              <input type="date" id="dueDate" formControlName="dueDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="priority">Prioridad:</label>
+              <select id="priority" formControlName="priority" class="form-control" required>
+                <option [value]="null" disabled>Select a priority</option>
+                <option value="low">Baja</option>
+                <option value="medium">Media</option>
+                <option value="high">Alta</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="tags">Etiquetas:</label>
+              <div class="tag-container">
+                <div class="tag" *ngFor="let tagCtrl of tags.controls; let i = index">
+                  {{ tagCtrl.value }}
+                  <span class="tag-remove" (click)="removeTag(i)">✕</span>
+                </div>
+              </div>
+              <input #newTag placeholder="Nueva etiqueta" class="form-control mb-2">
+              <button type="button" class="btn btn-primary btn-sm" (click)="addTag(newTag.value); newTag.value=''">Añadir</button>
+            </div>
+            <div class="form-group">
+              <label for="completed">Estado:</label>
+              <select id="completed" formControlName="completed" class="form-control" required>
+                <option [value]="null" disabled>Seleccionar estado</option>
+                <option value="true">Completado</option>
+                <option value="false">Pendiente</option>
+              </select>
+            </div>
+            <!-- Botones de acción -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-success mr-2" [disabled]="taskForm.invalid">Actualizar</button>
+              <button type="button" class="btn btn-secondary" (click)="goBack()">Regresar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

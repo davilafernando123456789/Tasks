@@ -1,0 +1,102 @@
+
+<div class="container mt-4 mb-5">
+    <!-- Título -->
+    <h1 class="text-black">Lista de Tareas</h1>
+    
+    <!-- Botón para crear tarea -->
+    <div class="mb-3">
+        <button class="btn btn-dark" (click)="createTask()">Crear tarea</button>
+    </div>
+    
+    <!-- Filtros -->
+    <div class="row">
+        <div class="col-md-4">
+            <label for="filter-select">Filtrar por:</label>
+            <select id="filter-select" [(ngModel)]="filterCriteria" (change)="handleFilterChange($event)"
+                class="form-control">
+                <option value="">Seleccione una opción</option>
+                <option value="status">Estado</option>
+                <option value="duedate">Fecha de vencimiento</option>
+                <option value="priority">Prioridad</option>
+            </select>
+        </div>
+        <!-- Filtro de estado -->
+        <div class="col-md-4" *ngIf="filterCriteria === 'status'">
+            <label for="status-filter">Seleccionar estado:</label>
+            <select id="status-filter" (change)="filterTasks()" class="form-control">
+                <option value="completed">Completado</option>
+                <option value="pending">Pendiente</option>
+            </select>
+        </div>
+        <!-- Filtro de fecha de vencimiento -->
+        <div class="col-md-4" *ngIf="filterCriteria === 'duedate'">
+            <label for="date-filter">Seleccionar fecha:</label>
+            <input type="date" id="date-filter" (change)="filterTasks()" class="form-control">
+        </div>
+        <!-- Filtro de prioridad -->
+        <div class="col-md-4" *ngIf="filterCriteria === 'priority'">
+            <label for="priority-filter">Prioridad:</label>
+            <select id="priority-filter" (change)="filterTasks()" class="form-control">
+                <option value="">Seleccionar prioridad</option>
+                <option value="low">Baja</option>
+                <option value="medium">Media</option>
+                <option value="high">Alta</option>
+            </select>
+        </div>
+        <!-- Ordenamiento -->
+        <div class="col-md-4">
+            <label for="sort-select">Ordenar por:</label>
+            <select id="sort-select" (change)="handleSortChange($event)" class="form-control">
+              <option value="dueDate">Fecha de vencimiento</option>
+              <option value="priority">Prioridad</option>
+            </select>
+          </div>
+    </div>
+    
+    <!-- Notificación -->
+    <div *ngIf="showNotification" class="notification" role="alert">
+        ¡El registro se eliminó exitosamente!
+        <button type="button" class="close" (click)="closeNotification()">
+            <span>&times;</span>
+        </button>
+    </div>
+    
+    <!-- Lista de tareas -->
+    <div *ngFor="let task of filteredTasks | async" class="card-container">
+        <div class="card task-card">
+            <!-- Cabecera de tarea -->
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title text-primary mb-0">{{ task.title }}</h3>
+                <div>
+                    <!-- Estado de tarea -->
+                    <span [ngClass]="getStatusClass(task.completed)" class="badge mr-2">{{ task.completed ? 'Completada' : 'Pendiente' }}</span>
+                </div>
+            </div>
+            <!-- Cuerpo de tarea -->
+            <div class="card-body">
+                <p class="card-text">{{ task.description }}</p>
+                <div>
+                    <!-- Detalles de tarea -->
+                    <p class="mb-1"><strong>Fecha de vencimiento: </strong>  {{ task.dueDate | date }}</p>
+                    <p class="mb-1"><strong>Prioridad: </strong>  <span [ngClass]="getPriorityClass(task.priority)" class="badge"> {{ task.priority }}</span></p>
+                    <p><strong>Etiquetas: </strong>  <span *ngFor="let tag of task.tags" class="badge badge-primary mr-1">{{ tag }}</span></p>
+                </div>
+                <!-- Botones -->
+                <div class="d-flex justify-content-end align-items-center mt-3">
+                    <!-- Botones para dispositivos de escritorio -->
+                    <div class="d-none d-md-block">
+                        <button class="btn btn-outline-primary mr-1" (click)="viewTask(task)">Detalles</button>
+                        <button class="btn btn-outline-secondary mr-1" (click)="editTask(task)">Editar</button>
+                        <button class="btn btn-danger" (click)="deleteTask(task)">Eliminar</button>
+                    </div>
+                    <!-- Botones para dispositivos móviles -->
+                    <div class="d-md-none">
+                        <button class="btn btn-outline-primary btn-block mb-1" (click)="viewTask(task)">Detalles</button>
+                        <button class="btn btn-outline-secondary btn-block mb-1" (click)="editTask(task)">Editar</button>
+                        <button class="btn btn-danger btn-block" (click)="deleteTask(task)">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

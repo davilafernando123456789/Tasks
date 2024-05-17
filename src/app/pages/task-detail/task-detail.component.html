@@ -1,0 +1,47 @@
+<div class="container mt-4 mb-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="text-black text-center">Detalles de tarea</h2>
+        </div>
+        <div class="card-body">
+          <div class="list-group detail-list">
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="font-weight-bold">Titulo:</span>
+              <span>{{ task.title }}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="font-weight-bold">Descripción:</span>
+              <span>{{ task.description }}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="font-weight-bold">Fecha de vencimiento:</span>
+              <span>{{ task.dueDate | date }}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="font-weight-bold">Prioridad:</span>
+              <span>
+                <span [ngClass]="getPriorityClass(task.priority)" class="badge">{{ task.priority }}</span>
+              </span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="font-weight-bold">Estado:</span>
+              <span [ngClass]="getStatusClass(task.completed)" class="badge">{{ task.completed ? 'Completed' : 'Pending' }}</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span class="font-weight-bold">Etiqueta:</span>
+              <span>
+                <span *ngFor="let tag of task.tags" class="badge badge-primary mr-1">{{ tag }}</span>
+              </span>
+            </div>
+            <div class="list-group-item text-center">
+              <button type="button" class="btn btn-primary mr-2" (click)="editTask()">Editar</button>
+              <button type="button" class="btn btn-secondary" (click)="goBack()">Regresar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
