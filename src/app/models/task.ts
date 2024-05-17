@@ -1,4 +1,5 @@
 export class Task {
+  // Atributos de la clase Task
   id: number;
   title: string;
   description: string;
@@ -7,6 +8,7 @@ export class Task {
   tags: string[];
   completed: boolean;
 
+  // Constructor para inicializar una nueva tarea
   constructor(
     id: number,
     title: string,
